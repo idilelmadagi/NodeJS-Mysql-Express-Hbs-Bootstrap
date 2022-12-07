@@ -1,0 +1,83 @@
+<div class="row align-items-center" style="height:70%;">
+    {{#if alert}}
+        <div class="row align-items-center" >
+            <div class="col-md-5 offset-md-5">
+                <div class="alert alert-success text-center" role="alert" id="alert" style="width: 300px;">  
+                
+                    <strong>   {{alert}} </strong>
+                </div>
+            </div>
+        </div>
+         
+    {{/if}}
+ 
+    <h3 style="color:lightblue ; text-align: center" > New Customer</h3>
+      
+    <div class="row align-items-center"> 
+    
+        <div class="col-md-3 offset-md-5  text-white">
+            <form action="/addCustomer" method="POST" name="myForm" class="needs-validation" novalidate>
+                <div class="form-outline mb-3">
+                    <label for="floatingInput" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="floatingInput" value="{{this.first_name}}" name="first_name" required>
+                </div>
+                <div class="form-outline mb-3">
+                    <label for="floatingInput" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="floatingInput" value="{{this.last_name}}" name="last_name" required>
+                </div>
+                <div class="form-outline mb-3">
+                    <label for="floatingInput" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="floatingInput" value="{{this.email}}" name="email" required>
+                </div>
+                <div class="form-outline mb-3">
+                    <label for="floatingInput" class="form-label">Store ID</label>
+                    <input type="text" class="form-control" id="floatingInput" value="{{this.store_id}}" name="store_id" required>
+                </div>
+                <div class="form-outline mb-3">
+                    <label for="floatingInput" class="form-label">Address ID</label>
+                    <input type="text" class="form-control" id="floatingInput" value="{{this.address_id}}" name="address_id">
+                </div>
+                 <div class="form-outline mb-3">
+                    <label for="floatingInput" class="form-label">Active</label>
+                    <select id="floatingInput"  name="active" value="{{this.active}}" id="categoryDropDown" class="form-select" required >
+                        <option value="0" >0</option>      
+                        <option value="1" >1</option>                    
+                    </select>
+                </div>     
+                
+                <button type="submit" class="btn btn-primary btn-block mb-4"> Save </button>
+           
+            </form>
+        </div>
+       
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(function() { 
+        $('[data-bs-toggle="tooltip"]').tooltip({
+            placement: 'top',
+            animated: true,
+            html:true
+        });
+    });
+
+    (function () {
+    'use strict'
+
+    var forms = document.querySelectorAll('.needs-validation')
+
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+        }, false)
+        })
+    })()
+
+</script>

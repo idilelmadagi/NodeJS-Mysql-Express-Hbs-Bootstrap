@@ -1,0 +1,143 @@
+
+    <form class="d-flex" action="/"  method="post">
+
+        <table class="table table-dark table-bordered table-sm caption-top " id="myTable">
+            
+            <caption style="color:lightblue; font-size: 20px;"> Customer Table</caption>
+            <thead class="thead-dark">
+                <tr>
+                    <th  scope="col"> Customer ID</th>
+                    <th  scope="col"> Store ID</th>
+                    <th id="firstName" scope="col"> FirstName</th>
+                    <th id="lastName" scope="col"> LastName</th>
+                    <th scope="col"> Email </th>
+                    <th  id="addressId" scope="col"> AddressID</th>
+                    <th scope="col"> Active</th>
+                    <th scope="col"> Create Date</th>
+                    <th scope="col"> Last Update</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider" id="myBodyTable">   
+                            
+                {{#each rows}}                  
+                    <tr>
+                        <td style="text-align:center" nowrap="nowrap" id="seri">{{this.customer_id}}</td>                           
+                        <td >{{this.store_id }}</td>
+                        <td >{{this.first_name}}</td>
+                        <td >{{this.last_name }}</td>
+                        <td >{{this.email }}</td>
+                        <td >
+                            
+                            <button id="addressIdBtn"  onclick="getAction('{{this.customer_id}}');" type="button" class="btn btn-outline-light btn-sm" style="font-family:sans-serif; font-size:13;"  data-bs-toggle="modal" data-bs-target="#theModal" ><i class="bi bi-pencil"></i></button>
+
+                            &nbsp;
+                            {{this.address_id }}</td>
+                        <td >{{this.active }}</td>
+                        <td >{{formatDateTime this.create_date}} </td>
+                        <td >{{formatDateTime this.last_update}} </td>
+                        <td style="text-align:center;" nowrap="nowrap"> 
+                            <a href="/{{this.customer_id}}" target="_blank" style="font-family:sans-serif; font-size:12; color:#afeeee"> Edit</a>
+                        </td>
+                    </tr>
+                
+                {{/each}}
+
+            </tbody>
+            
+        </table>
+    </form>  
+
+    <div class="modal fade modal-sm text-center" id="theModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="user_form">
+                    <div class="modal-body">
+                        <label for="floatingInput" class="form-label"> Address ID</label>
+                        <input type="text" class="form-control" id="floatingInput" value="{{this.address_id}}" name="address_id">                       
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary" onclick="getParam();">Update</button>   
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#myTable thead th").each(function(){
+                var title= $(this).text().trim();
+                var id= $(this).text().trim();
+                if(id == "FirstName" | id == "LastName" | id == "AddressID") {
+                    $(this).html('<input id="'+id+'" type="text"  class="form-control form-control-sm" placeholder="'+title+'" />');
+
+                }
+                else {
+                    $(this).html(title);
+                }
+                   
+            });
+
+        });
+
+         $(document).ready(function () {
+            $("#FirstName").on("keyup", function() {
+                var value = $(this).val().toLowerCase().trim();
+                $("#myBodyTable tr").filter(function() {
+                    $(this).toggle($(this).find("td:eq(2)").text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+         $(document).ready(function () {
+            $("#LastName").on("keyup", function() {
+                var value = $(this).val().toLowerCase().trim();
+                $("#myBodyTable tr").filter(function() {
+                    $(this).toggle($(this).find("td:eq(3)").text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+         $(document).ready(function () {
+            $("#AddressID").on("keyup", function() {
+                var value = $(this).val().toLowerCase().trim();
+                $("#myBodyTable tr").filter(function() {
+                    $(this).toggle($(this).find("td:eq(5)").text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+        });
+
+        let param;
+        function getAction(id){
+            param  = "/addressID/" + id;          
+        }
+        function getParam(){
+            document.user_form.action =param;
+            document.user_form.method = "POST";
+            return true;
+        }
+
+       var rows =  document.getElementById("myTable").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+        for(i=0 ; i<rows.length; i++){
+             let cells= rows[i].getElementsByTagName("td");
+            let active = parseInt(cells[6].innerHTML);
+            if(active == 0){
+
+                rows[i].style.color = "LightPink";
+            }
+            else {
+                rows[i].style.color = "LightGreen";
+
+            }
+        }
+
+    </script>
